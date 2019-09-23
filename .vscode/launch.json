@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - biao",
+            "request": "launch",
+            "mainClass": "biao",
+            "projectName": "Software-construction-programming-experiment_2d3e7c3"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - p2",
+            "request": "launch",
+            "mainClass": "p2",
+            "projectName": "Software-construction-programming-experiment_2d3e7c3"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - p1",
             "request": "launch",
             "mainClass": "p1",
