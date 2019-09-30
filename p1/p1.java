@@ -56,49 +56,70 @@ class p1 {
         return false;
     }
 
-    public  void cmp(String S) throws FileNotFoundException {
-        System.setOut(new PrintStream(new FileOutputStream("p1/output.txt", true)));
-        for (int i = 0, isString = 0; i < S.length(); i++) {
-            String a = new String() + S.charAt(i);
-            if (p1.cmpString(jie, a) || p1.cmpString(yun, a) || p1.cmpString(zifuchuan, a)) {
-                if (i == 0) {
-
-                    if (p1.cmpString(zifuchuan, a)) {
-                        if (isString == 0) {
-                            isString = 2;
+    public  void cmp(String S) {
+        try{
+            System.setOut(new PrintStream(new FileOutputStream("p1/output.txt", true)));
+            for (int i = 0, isString = 0; i < S.length(); i++) {
+                String a = new String() + S.charAt(i);
+                if (p1.cmpString(jie, a) || p1.cmpString(yun, a) || p1.cmpString(zifuchuan, a)) {
+                    if (i == 0) {
+    
+                        if (p1.cmpString(zifuchuan, a)) {
+                            if (isString == 0) {
+                                isString = 2;
+                            }
+                            isString--;
+                            System.out.printf("(%c, 字符串标记符)\n", S.charAt(i));
+                        } else if (p1.cmpString(jie, a)) {
+                            System.out.printf("(%c, 界符)\n", S.charAt(i));
+                        } else {
+                            System.out.printf("(%c, 运算符)\n", S.charAt(i));
                         }
-                        isString--;
-                        System.out.printf("(%c, 字符串标记符)\n", S.charAt(i));
-                    } else if (p1.cmpString(jie, a)) {
-                        System.out.printf("(%c, 界符)\n", S.charAt(i));
+                        S = p1.cutString(S, 1)[1];
                     } else {
-                        System.out.printf("(%c, 运算符)\n", S.charAt(i));
+                        String[] req;
+                        String ans;
+                        req = p1.cutString(S, i);
+                        ans = req[0];
+                        S = req[1];
+                        if (isString == 1) {
+                            this.list_zifuchuan.add(ans);
+                            System.out.printf("(%s, 字符串):%d\n", ans, this.list_zifuchuan.size()-1);
+                        } else if (p1.isNum(ans)) {
+                            this.list_num.add(ans);
+                            System.out.printf("(%s, 数字常量):%d\n", ans, this.list_num.size()-1);
+                        } else if (p1.cmpString(guanjianzi, ans)) {
+                            this.list_guanjianzi.add(ans);
+                            System.out.printf("(%s, 关键字):%d\n", ans, this.list_guanjianzi.size()-1);
+                        } else {
+                            this.list_biaoshifu.add(ans);
+                            System.out.printf("(%s, 标识符):%d\n", ans, this.list_biaoshifu.size()-1);
+                        }
                     }
-                    S = p1.cutString(S, 1)[1];
-                } else {
-                    String[] req;
-                    String ans;
-                    req = p1.cutString(S, i);
-                    ans = req[0];
-                    S = req[1];
-                    if (isString == 1) {
-                        this.list_zifuchuan.add(ans);
-                        System.out.printf("(%s, 字符串):%d\n", ans, this.list_zifuchuan.size()-1);
-                    } else if (p1.isNum(ans)) {
-                        this.list_num.add(ans);
-                        System.out.printf("(%s, 数字常量):%d\n", ans, this.list_num.size()-1);
-                    } else if (p1.cmpString(guanjianzi, ans)) {
-                        this.list_guanjianzi.add(ans);
-                        System.out.printf("(%s, 关键字):%d\n", ans, this.list_guanjianzi.size()-1);
-                    } else {
-                        this.list_biaoshifu.add(ans);
-                        System.out.printf("(%s, 标识符):%d\n", ans, this.list_biaoshifu.size()-1);
-                    }
+                    i = -1;
                 }
-                i = -1;
             }
+        } catch(Exception e){
+            System.out.println("异常");
         }
     }
+
+    public void showList(){
+        System.out.println("-----------------------------------------------------");
+        for(int i = 0; i < this.list_biaoshifu.size(); i++){
+            System.out.printf("<标识符，%s>:%d\n", this.list_biaoshifu.get(i), i);
+        }
+        for(int i = 0; i < this.list_guanjianzi.size(); i++){
+            System.out.printf("<关键字, %s>:%d\n", this.list_guanjianzi.get(i), i);
+        }
+        for(int i = 0; i < this.list_zifuchuan.size(); i++){
+            System.out.printf("<字符串, %s>:%d\n", this.list_zifuchuan.get(i), i);
+        }
+        for(int i = 0; i < this.list_num.size(); i++){
+            System.out.printf("<数字常量, %s>:%d\n", this.list_num.get(i), i);
+        }
+    }
+    
     public static void main(String[] args) throws FileNotFoundException {
         File file = new File("p1/biao.txt");
         biao b1 = new biao(file);
@@ -108,7 +129,7 @@ class p1 {
         while(in.hasNext()){
             test.cmp(in.nextLine());
         }
-        in.close();
+        test.showList();
         // System.out.println(b1.toString());
     }
      
